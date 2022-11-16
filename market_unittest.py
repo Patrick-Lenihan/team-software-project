@@ -75,6 +75,8 @@ class TestMarket(unittest.TestCase):
 
 
 
+
+
 def get_amounts_bid(bid_list):
 	formated_list = []
 	if bid_list == None:

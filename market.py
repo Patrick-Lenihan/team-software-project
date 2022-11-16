@@ -41,7 +41,8 @@ class Market(object):
 
 		"""
 		bids_by_time = self.requestBids(predictions)
-		winners = self.selectWinners(predictions,bids_by_time)
+		winners = self.selectWinners(predictions,bids_by_time,self._producers)
+		#print("gw winners: ",winners)
 		return winners
 
 	def requestBids(self,predictions):
@@ -61,10 +62,10 @@ class Market(object):
 		for i in predictions:
 			bidding_rankings_by_time.append(MultiLevelQueue())
 		for producer in self._producers:
-			for i,bid in ennumerate(producer.GetFutureBid(predictions)):
+			for i,bid in enumerate(producer.getFutureBid(predictions)):
 				bidding_rankings_by_time[i].add(bid)
 		return bidding_rankings_by_time
-	def selectWinners(self,predictions,bids_by_time):
+	def selectWinners(self,predictions,bids_by_time,producers):
 		"""
 
 		Args:
@@ -78,9 +79,12 @@ class Market(object):
 					{<producer_object>: [<bid_object>,<bid_object>.....]} 
 		"""
 
-		winners = {}
+		winners ={}
+		for producer in producers:
+			winners[producer]=[]
 		for i,time in enumerate(bids_by_time):
 			winners = time.selectWinners(predictions[i],winners)
+		return winners
 
 
 class MultiLevelQueue(object):
@@ -95,32 +99,39 @@ class MultiLevelQueue(object):
 	def add(self,bid):
 		level = bid.level
 		# if the level does not exist yet in the MLQ add it and all precieding levels
-		if level < len(self._top_level_list):
-			for i in range((level+1)-len(self._top_level_list)):
-				self._top_level_list.append(PriorityQueue())
-		self._top_level_list[level].add()
+		if len(self._top_level_list) <= level:
+			for i in range(level - (len(self._top_level_list)-1)):
+				self._top_level_list.append(PQ())
+		self._top_level_list[level].add(bid)
 	def selectWinners(self,prediction,winners):
 		"""
 		selects the winners of the bidding by 
 		dequeing the priority queue
 		"""
 		total = prediction
-		for level in self._top_level_list:
-			winner = selected.dequeue
+		level = 0
+		while True:
+			winner = self._top_level_list[level].dequeue()
 			if winner == None:
+				level += 1
 				continue
 			total -= winner.amount_electrictiy
-			# making sure the order does not contain more production than necicary
-			if total <0:
-				winner.amount_electrictiy+= total
-				total = 0
-			winners[winner.producer].append(winner)
-			if total ==0:
-				#making sure the output format is as expected
-				for producer in winners.keys():
-					if len(winners[producer])< winners[winner.producer]:
-						producer.append(None)
-		return winners 
+
+			if total < 0:
+				winner.amount_electrictiy += total
+				total = 0 
+			if winner.producer in winners:
+				winners[winner.producer].append(winner)
+			else:
+				winners.update({winner.producer:[winner]})
+			if total == 0:
+				for i in winners.keys():
+					if len(winners[i]) < len(winners[winner.producer]):
+						winners[i].append("Nothing")
+				return winners
+
+
+
 
 
 class PQ(object):
@@ -128,8 +139,8 @@ class PQ(object):
 		self.q = []
 	def add(self,bid):
 		# queuing elements from the lists end to reduce memory realocation on dequeue
-		for i in range(len(self.q)-1,0,-1):
-			if self.q[i] > bid.amountBid:
+		for i in range(len(self.q)-1,-1,-1):
+			if bid.amountBid < self.q[i].amountBid:
 				if i == len(self.q)-1:
 					self.q.append(bid)
 					return
@@ -142,3 +153,18 @@ class PQ(object):
 			return self.q.pop()
 		return None
 
+
+def rep(msg,thing):
+	for i in thing:
+		print(msg,get_amounts_bid(thing[i]))
+
+def get_amounts_bid(bid_list):
+	formated_list = []
+	if bid_list == None:
+		return None
+	for i in bid_list:
+		if i == "Nothing":
+			formated_list.append("Nothing")
+		else:
+			formated_list.append(i.amountBid)
+	return formated_list
