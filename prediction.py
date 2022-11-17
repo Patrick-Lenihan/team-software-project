@@ -67,15 +67,12 @@ class Prediction():
 
         max_difference = 0 # biggest difference between a predicted value and its historical average
         
-        print(self.history)
-        print(historical_prediction)
         for i in range(len(historical_data)):
             if historical_data[i] < self.history[i] and (self.history[i] - historical_data[i]) > max_difference:
                 max_difference = self.history[i] - historical_data[i]
         
         for i in range(len(historical_prediction)):
             historical_prediction[i] += max_difference
-        print(historical_data)
         self.time += .25 # increment time for the next request  
         
         self.time = self.checkTimeValue(self.time)
