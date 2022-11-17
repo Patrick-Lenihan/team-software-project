@@ -24,7 +24,7 @@ class Prediction():
         elif self.time == 23.75:
             self.day -= 1
             if self.day == -1:
-                self.day = 5
+                self.day = 4
         
     def getHistoricalData(self):
         time = self.time
