@@ -76,8 +76,7 @@ class TestPrediction(unittest.TestCase):
         self.setup()
         self.prediction.time = 0
         self.prediction.day = 0
-        self.prediction.usage = 1234321
-        self.prediction.updateHistoricalData()
+        self.prediction.predict(1234321)
         
         cursor = self.connect.cursor()
         cursor.execute('SELECT use FROM use_history WHERE time = 0 AND day = 0')
