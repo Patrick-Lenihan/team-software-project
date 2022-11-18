@@ -34,7 +34,7 @@ class Meter(object):
         self._producer = output
         
 
-    def getUsage(self, usage):
+    def getUsage(self):
 
         '''
         Gets the current electricity usage from the controller 
@@ -60,16 +60,12 @@ class Meter(object):
         self.price = self.substation.getPrice()
         self.producer = self.substation.getProducer()
 
-    def sendRequest(self):
+    def sendUsage(self):
 
         '''
-        Sends a request to the controller if more or less electricity is required.
+        Sends the amount of electricity used to the substation
         '''
 
-        if self.usage < self.received:
-            self.main.powerstation.rampUp(self.received - self.usage) # Should talk to controller first, but these methods are not yet implemented
-        elif self.usage > self.received:
-            self.main.powerstation.rampDown(self.usage - self.received) 
-
+        self.substation.receiveUsage(self.usage)
     
     
