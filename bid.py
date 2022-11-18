@@ -14,4 +14,4 @@ class Bid(object):
 		self.amountBid = bid
 		self.producer = producer
 		self.amount_electrictiy = amount_electrictiy
-		self.level
+		self.level = level
