@@ -2,6 +2,12 @@ import sqlite3 as sl
 connect = sl.connect('app.db')
 cursor = connect.cursor()
 
+'''
+Module generates a prediction of the usage needed in the next hour.
+Takes in recent usage and comparea it to historical trend. 
+In the event that recent usage is below historical usage for a given time, historical trend is used.
+Where recent usage is greater than historical trend, 
+'''
 class Prediction():
     def __init__(self):
         self.usage = 0
