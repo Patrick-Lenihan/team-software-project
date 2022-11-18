@@ -70,20 +70,20 @@ class Main():
         return self.prediction.predict(usage)
 
     def sendOrders(self, winners):
-          """
-          sends the orders to the producers
+        """
+        sends the orders to the producers
 
-          sends the orders that have been decided by the market module to each producer in the 
-          producers list.
+        sends the orders that have been decided by the market module to each producer in the 
+        producers list.
 
-          Args:
-          winners: a dict with each producer as a key a list of how much energy they should produce
-                   for a given time period in the future 
-                   eg.
-                   {
-                        producer: [amount,amount.....]
-                    }
-            """
+        Args:
+        winners: a dict with each producer as a key a list of how much energy they should produce
+                for a given time period in the future 
+                eg.
+                {
+                	producer: [amount,amount.....],
+                }
+        """
         for i in self.producers:
             i.receiveOrder(winners[i])
 
