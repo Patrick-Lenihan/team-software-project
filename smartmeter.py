@@ -42,7 +42,8 @@ class SmartMeter(object):
         '''
 
         self._usage = random.randint(3500, 6000)
-
+    def getUsage(self):
+        return 2000
 
         
 
