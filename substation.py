@@ -31,7 +31,7 @@ class Substation(object):
         Calculates the current electricity usage from all connected homes
         '''
         self._usage = 0
-        for user in self.users:
+        for user in self._users:
             self._usage += user.getUsage()
 
     def getUsage(self):

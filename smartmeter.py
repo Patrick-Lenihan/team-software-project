@@ -1,71 +1,53 @@
 '''
-The smart meter module is used to represent the end users of the system. 
-For simulation purposes, the smart meter will receive data from the controller about the 
-amount of electricity it has consumed. 
-
-The smart meter will then receive the appropriate amount of electricity from the sub-station, 
-as well as the current price and producer of the elecectricity supplied.
-
-The smart meter class will be called several times by the controller, to represent several end users.
+The smart meter acts as the receiver of electricity from the substation.
+It calcualtes the amount of electricity used by the connected household and
+sends this data to the substation.
 '''
 
-class Meter(object):
+import random
+
+class SmartMeter(object):
 
     '''
-    The meter class will be used to receive the current electricity consumption from the controller,
-    as well as the current electricity price and producer.
+    The Smart Meter class is used to calculate the amount of electricity used by a household
     '''
 
-    def __init__(self, usage, price, producer, output):
+    def __init__(self, usage):
 
         '''
         The initialiser for the meter class
 
         Args:
-            usage: the amount of electricity used at a given time (sent from the main controller)
-            received: the amount of electricity received at a given time (sent from the substation)
-            price: the current price of electricity (sent from the controller)
-            producer: the current producer of electricity (sent from the controller)
+            usage: the amount of electricity used at a given time by the connected household
         '''
 
         self._usage = usage
-        self._received = price
-        self._price = producer
-        self._producer = output
+
+    def updateUsage(self):
+
+        '''
+        Returns the amount of electricity used by the connected household
+
+        Returns:
+            usage: the amount of electricity used by the connected household
+        '''
+
+        return self.calculateUsage(self._usage)
+
+    def calculateUsage(self):
+
+        '''
+        Calculates the amount of electricity used by the connected households
+        (For now I will randomly generate a number between 3500 and 6000 - average daily usage)
+        '''
+
+        self._usage = random.randint(3500, 6000)
+    def getUsage(self):
+        return 2000
+
         
 
-    def getUsage(self):
+  
 
-        '''
-        Gets the current electricity usage from the controller 
 
-        Args:
-            usage: the amount of electricity used at a given time
-        '''
 
-        self.usage = self.main.getUsage()
-
-    def getElectricity(self):
-
-        '''
-        Gets the current electricity produced, as well as the price and producer from the substation.
-
-        Args:
-            received: the amount of electricity received at a given time
-            price: the current price of electricity
-            producer: the current producer of electricity
-        '''
-
-        self.received = self.substation.getElectricity()
-        self.price = self.substation.getPrice()
-        self.producer = self.substation.getProducer()
-
-    def sendUsage(self):
-
-        '''
-        Sends the amount of electricity used to the substation
-        '''
-
-        self.substation.receiveUsage(self.usage)
-    
-    
