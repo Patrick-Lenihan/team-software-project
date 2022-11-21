@@ -22,15 +22,11 @@ class SmartMeter(object):
             received: the amount of electricity received from the substation
             usage: the amount of electricity used by the connected household
             time: the time at which the usage was calculated
-            num_meters: the number of smart meters 
-            ID: the ID of the row in the database
         '''
 
         self._received = 0
         self._usage = 0
         self._time = 0
-        self._num_meters = 0
-        self._ID = 1
 
     def updateUsage(self):
 
@@ -52,9 +48,9 @@ class SmartMeter(object):
 
         with connect:
 
-            query = f"SELECT time, usage, num_meters FROM total_usage WHERE ID = {self._ID}"
+            query = f"SELECT time, usage FROM ussage WHERE time = {self._time}"
 
-            self._ID += 1
+            self._time += 0.25
 
             cursor.execute(query)
 
