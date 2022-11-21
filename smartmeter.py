@@ -24,7 +24,6 @@ class SmartMeter(object):
             time: the time at which the usage was calculated
         '''
 
-        self._received = 0
         self._usage = 0
         self._time = 0
 
@@ -42,13 +41,13 @@ class SmartMeter(object):
     def calculateUsage(self):
 
         '''
-        Calculates the amount of electricity used by the connected households by 
-        reading the total consumption and number of smart meters at a given time
+        Returns the amount of electricity used by the connected household by
+        reading the value from the database
         '''
 
         with connect:
 
-            query = f"SELECT time, usage FROM ussage WHERE time = {self._time}"
+            query = f"SELECT time, usage FROM usage WHERE time = {self._time}"
 
             self._time += 0.25
 
@@ -60,8 +59,6 @@ class SmartMeter(object):
                 self._usage = value[1]
                 return self._usage
 
-if __name__ == "__main__":
-    meter = SmartMeter()
 
 
         
