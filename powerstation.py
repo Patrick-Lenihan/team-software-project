@@ -173,6 +173,8 @@ class FossilFuelPlant(Producer):
                 illigal_jumps.put({"Position":i,"jump: ":jump}) 
             i+=1
         return jumps, illigal_jumps
+    
+    
     def reformatJumpsToLegal(self,jumps,bad_jump):
         '''reformatJumpsToLegal takes in a jump that is not possable 
         given the ramp up limit and makes that jump possable by increasing
