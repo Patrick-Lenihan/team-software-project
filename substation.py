@@ -32,7 +32,7 @@ class Substation(object):
         '''
         self._usage = 0
         for user in self._users:
-            self._usage += user.getUsage()
+            self._usage += user.updateUsage()
 
     def getUsage(self):
 
