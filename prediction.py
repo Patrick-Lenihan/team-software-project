@@ -66,7 +66,7 @@ class Prediction():
         '''
         time = self._time
         use_history = [] # last 5 values to compare with current use
-        historical_prediction = [] # next 5 values predict with current use 
+        historical_prediction = [] # next 5 values predict
         
         with connect:
             for i in range(5):
@@ -78,7 +78,7 @@ class Prediction():
                 time += -.25
                 
                 
-            time = self._time
+            time = self._time + .25
             for i in range(5):
                 time = self.checkTimeValue(time)
                 cursor.execute('SELECT AVG(use) FROM use_history WHERE time = %f'%(time))

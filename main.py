@@ -37,14 +37,18 @@ class Main():
         to send information or run processes on each object.
         """
         time = 0
+        
         while True:
             usage = self.getUsage()
             totalProduction = self.pollProducers()
-            if totalProduction >= usage:
-                print('SUCCESS')
-            else: 
+            if totalProduction <= usage:
                 print('FAIL - ', usage - totalProduction)
-            #print("usage: ",usage,"totalProduction: ",totalProduction)
+            print("usage: ",usage)
+            print("Total Production: ",totalProduction)
+            print("Time: ", time/4)
+            print()
+            
+            
 
             predictions = self.getPredictions(usage)
             winners = self.market.GetWinners(predictions)
