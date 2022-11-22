@@ -69,7 +69,7 @@ class Simulation(object):
 		substations if modified.
 		creates the substation with smart meters connected to it.
 		"""
-		smartmeter_list = [smartmeter.SmartMeter(0),smartmeter.SmartMeter(0)]
+		smartmeter_list = [smartmeter.SmartMeter(),smartmeter.SmartMeter()]
 		main_substation = substation.Substation(0,smartmeter_list)
 
 		return len(smartmeter_list), main_substation
