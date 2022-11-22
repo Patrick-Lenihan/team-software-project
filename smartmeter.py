@@ -18,7 +18,6 @@ class SmartMeter(object):
         '''
         The initialiser for the meter class
         Args:
-            received: the amount of electricity received from the substation
             usage: the amount of electricity used by the connected household
             time: the time at which the usage was calculated
         '''
@@ -56,8 +55,3 @@ class SmartMeter(object):
             for value in data:
                 self._usage = value[1]
                 return self._usage
-
-  
-
-
-

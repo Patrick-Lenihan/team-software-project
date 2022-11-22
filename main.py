@@ -40,7 +40,11 @@ class Main():
         while True:
             usage = self.getUsage()
             totalProduction = self.pollProducers()
-            print("ussage: ",usage,"totalProduction: ",totalProduction)
+            if totalProduction >= usage:
+                print('SUCCESS')
+            else: 
+                print('FAIL - ', usage - totalProduction)
+            #print("usage: ",usage,"totalProduction: ",totalProduction)
 
             predictions = self.getPredictions(usage)
             winners = self.market.GetWinners(predictions)

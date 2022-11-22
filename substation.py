@@ -5,6 +5,7 @@ the total power being consumed.
 This data is sent on to the controller to help regulate production.
 '''
 
+
 class Substation(object):
 
     '''
@@ -23,7 +24,6 @@ class Substation(object):
 
         self._usage = usage
         self._users = users
-        
 
     def getSmartMeterUsage(self):
 
