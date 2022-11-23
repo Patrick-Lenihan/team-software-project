@@ -1,10 +1,11 @@
 import unittest
 import sqlite3 as sl
+import csv
 from smartmeter import SmartMeter
 
 class TestSmartMeter(unittest.TestCase):
 
-    def setup(self):
+    def test_calculate_usage(self):
 
         '''
         Setup run at the beginning of each test to ensure clean database for each test.
@@ -13,35 +14,39 @@ class TestSmartMeter(unittest.TestCase):
         to avoid false positive tests.
         '''
 
-        connect = sl.connect('total.db')
-        cursor = connect.cursor()
+        # Write unit test for getSmartMeterUsage
+        conn = sl.connect('app.db')
+        cursor = conn.cursor()
+        cursor.execute("DROP TABLE usage")
+        cursor.execute("CREATE TABLE usage (decTime TEXT, usage INTEGER)")
+        cursor.execute("INSERT INTO usage VALUES (0,2345432)")
+        conn.commit()
 
-        # Create a table to store the time and total usage
-        with connect:
-
-            # Create the table
-            cursor.execute('CREATE TABLE IF NOT EXISTS total_usage (ID INTEGER PRIMARY KEY, time FLOAT, usage INT, num_meters INT)')
-
-            # Open the file 
-            with open('weeklyUsage.txt', 'r') as f:
-
-                # Read the file and separate the time and usage
-                for line in f:
-                            
-                    # Split the line into three
-                    time, usage, num_meters = line.split()
-                    
-                    # Insert the data into the table
-                    cursor.execute('''INSERT INTO total_usage(time, usage, num_meters) VALUES(?,?,?);''', (time, usage, num_meters))
-
+        # Get smart meter usage from database
+        meter = SmartMeter()
+        meter.calculateUsage()
     
-        self.smartmeter = SmartMeter()
+        # Check if usage is correct
+        self.assertEqual(meter._usage, 2345432, 'smart meter did not calculate total usage correctly')
 
-    def test_calculate_usage(self):
-        self.setup()
-        for i in range(10):
-            usage = self.smartmeter.calculateUsage()
-            print(usage)
+    def test_update_usage(self):
+
+        # Test update usage
+        conn = sl.connect('app.db')
+        cursor = conn.cursor()
+        cursor.execute("DROP TABLE usage")
+        cursor.execute("CREATE TABLE usage (decTime TEXT, usage INTEGER)")
+        cursor.execute("INSERT INTO usage VALUES (0,2345432)")
+        conn.commit()
+
+        # Get smart meter usage from database
+        meter = SmartMeter()
+        meter.updateUsage()
+
+        # Check if usage is correct
+        self.assertEqual(meter._usage, 2345432, 'smart meter did not calculate total usage correctly')
+
+
 
 if __name__ == "__main__":
     unittest.main()

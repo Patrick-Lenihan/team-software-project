@@ -5,6 +5,7 @@ the total power being consumed.
 This data is sent on to the controller to help regulate production.
 '''
 
+
 class Substation(object):
 
     '''
@@ -23,7 +24,6 @@ class Substation(object):
 
         self._usage = usage
         self._users = users
-        
 
     def getSmartMeterUsage(self):
 
@@ -31,8 +31,8 @@ class Substation(object):
         Calculates the current electricity usage from all connected homes
         '''
         self._usage = 0
-        for user in self.users:
-            self._usage += user.getUsage()
+        for user in self._users:
+            self._usage += user.updateUsage()
 
     def getUsage(self):
 

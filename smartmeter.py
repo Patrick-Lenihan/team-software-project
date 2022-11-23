@@ -4,7 +4,7 @@ It calcualtes the amount of electricity used by the connected household and
 sends this data to the substation.
 '''
 import sqlite3 as sl
-connect = sl.connect('total.db')
+connect = sl.connect('app.db')
 cursor = connect.cursor()
 
 class SmartMeter(object):
@@ -17,9 +17,7 @@ class SmartMeter(object):
 
         '''
         The initialiser for the meter class
-
         Args:
-            received: the amount of electricity received from the substation
             usage: the amount of electricity used by the connected household
             time: the time at which the usage was calculated
         '''
@@ -31,7 +29,6 @@ class SmartMeter(object):
 
         '''
         Returns the amount of electricity used by the connected household
-
         Returns:
             usage: the amount of electricity used by the connected household
         '''
@@ -47,7 +44,7 @@ class SmartMeter(object):
 
         with connect:
 
-            query = f"SELECT time, usage FROM usage WHERE time = {self._time}"
+            query = f"SELECT decTime, usage FROM usage WHERE decTime = {self._time}"
 
             self._time += 0.25
 
@@ -58,12 +55,3 @@ class SmartMeter(object):
             for value in data:
                 self._usage = value[1]
                 return self._usage
-
-
-
-        
-
-  
-
-
-

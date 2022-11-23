@@ -56,9 +56,11 @@ class Producer(object):
                     with index 0 being the order and the rest being predicted orders
                     in 15 min increments.
         '''
-        self.output = orders[i].amount_electrictiy
+        self.output = orders[0].amount_electrictiy
         if self.max_output < self.output:
-            self.output = max_output 
+            self.output = max_output
+    def __hash__(self):
+        return hash((self.output,self.price,self.max_output,self.emmision_level))
 
     
     current_production = property(getOutput,setOutput)
@@ -173,6 +175,8 @@ class FossilFuelPlant(Producer):
                 illigal_jumps.put({"Position":i,"jump: ":jump}) 
             i+=1
         return jumps, illigal_jumps
+    
+    
     def reformatJumpsToLegal(self,jumps,bad_jump):
         '''reformatJumpsToLegal takes in a jump that is not possable 
         given the ramp up limit and makes that jump possable by increasing
