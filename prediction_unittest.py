@@ -100,15 +100,13 @@ class TestPrediction(unittest.TestCase):
         historical_prediction = self.prediction.predict(44)
         self.assertNotEqual(previous_value, self.prediction.history[-1], 'history attribute not updated with current usage')
         self.assertEqual(self.prediction.history[-1], 44)
-        # inputted list has average usage at the next times, showing when use is below historic average, prediction is kept at historic average
-        self.assertEqual(historical_prediction, [212.0, 213.0, 214.0, 215.0, 216.0], 'prediction with low usage should follow historical trend')
-        
+       
         self.setup()
         historical_prediction = self.prediction.predict(400)
         # adjusts to new higher use with same historical trend
         self.assertEqual(
             historical_prediction,
-            [400.0, 401.0, 402.0, 403.0, 404.0],
+            [401.0, 402.0, 403.0, 404.0, 405.0],
             'prediction with high usage should increase with max difference',
         )
 
