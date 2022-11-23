@@ -1,0 +1,63 @@
+import tkinter as tk
+import tkinter.ttk as ttk
+import powerstation
+import smartmeter
+import substation
+import prediction
+
+class GUI():
+    ''' '''
+
+    #CONSTRUCTOR
+    def __init__(self, root):
+        #ROOT
+        self.root = root
+        self.root.title('Controller GUI')
+        self.root.geometry('1000x650')
+        self.root.configure(background = 'white')
+
+        #FRAMES
+        frame = tk.Frame(root)
+        frame.pack()
+
+        self.mainAreaFrame = tk.Frame(self.root)
+        
+        self.rightFrame = tk.Frame(self.root)
+        self.rightFrame = tk.Frame(self.root, bg = '#7C90A0')
+        self.rightFrame.place(x = 735, y = 0, width = 250, height = 620)
+        welcome = tk.Text(self.rightFrame, height = 2, width = 20, font = 'calibri', bg = '#7C90A0', highlightthickness=0, highlightbackground = '#7C90A0', highlightcolor = '#7C90A0', relief = 'flat')
+        welcome.insert(tk.END, 'Select a grid element for more information')
+        welcome.pack()
+         
+        self.mainAreaFrame = tk.Frame(self.root, bg = '#181D27')
+        self.mainAreaFrame.place(x = 10, y = 0, width = 700, height = 620)
+
+        #RIGHT FRAME ACTIONS
+        def fossilFuelDisplay(self):
+            for widgets in self.rightFrame.winfo_children():
+                widgets.destroy()
+            allHomesUsage = tk.Button(self.rightFrame, text = 'View current electricity usage by all homes', font = 'calibri', width = 15, bg ='#52FFB8', relief = 'flat')
+            allHomesUsage.grid(row = 0, column = 0)
+            #allMetersUsage = tk.Button(self.rightFrame, text = 'View current electricity usage by all smart meters', font = 'calibri', width = 15, bg ='#52FFB8', relief = 'flat') 
+            #totalUsage = tk.Button(self.rightFrame, text = 'View total current electricity usage', font = 'calibri', width = 15, bg ='#52FFB8', relief = 'flat')
+
+        #MAIN AREA BUTTONS
+        fossilFuelPlant = tk.Button(self.mainAreaFrame, text = 'Fossil fuel plant', font = 'calibri', width = 15, bg ='#52FFB8', relief = 'flat')#, command = fossilFuelDisplay(self))
+        fossilFuelPlant.grid(row = 1, column = 0, pady = 100, padx = 40)
+        smartMeter = tk.Button(self.mainAreaFrame, text = 'Smart meter', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat')
+        smartMeter.grid(row = 1, column = 1, pady = 100, padx = 10)
+        bess = tk.Button(self.mainAreaFrame, text = 'BESS', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat')
+        bess.grid(row = 1, column = 2, pady = 100, padx = 10)
+        
+        controller = tk.Button(self.mainAreaFrame, text = 'Controller', font = 'calibri', width = 15, bg ='white', relief = 'flat')
+        controller.grid(row = 13, column = 1, pady = 20)
+        
+        substation = tk.Button(self.mainAreaFrame, text = 'Substation', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat')
+        substation.grid(row = 14, column = 0, pady = 100, padx = 20)
+        dam = tk.Button(self.mainAreaFrame, text = 'Dam', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat')
+        dam.grid(row = 14, column = 1, pady = 100, padx = 20)
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    p = GUI(root)
+    root.mainloop()
