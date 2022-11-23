@@ -9,3 +9,11 @@ Our controller will monitor the usage levels of electricity within the system. I
 
 
 **this project is still in the prototype phase**.
+
+## Directions to use
+- Download the code from the main branch
+- go to https://www.eirgridgroup.com/ and download the data for a day of ussage(cannot be for the current day).
+- rename this file usage.csv
+- place this file in the same directory as the downloaded programs
+- run *python3 simulation.py* from inside the downloaded directory. 
+- change simulation.py to represent the architecture you want.
