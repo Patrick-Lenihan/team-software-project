@@ -56,9 +56,11 @@ class Producer(object):
                     with index 0 being the order and the rest being predicted orders
                     in 15 min increments.
         '''
-        self.output = orders[i].amount_electrictiy
+        self.output = orders[0].amount_electrictiy
         if self.max_output < self.output:
-            self.output = max_output 
+            self.output = max_output
+    def __hash__(self):
+        return hash((self.output,self.price,self.max_output,self.emmision_level))
 
     
     current_production = property(getOutput,setOutput)
@@ -149,7 +151,7 @@ class FossilFuelPlant(Producer):
 
         if 0 < jumps[0]:
             self.startRampUp(jumps[0])
-        else: self.rampDown(jumps[0])
+        else:self.rampDown(jumps[0]*-1)
     def getElectricityFromOrders(self,orders):
         for i in range(len(orders)):
             orders[i] = orders[i].amount_electrictiy
