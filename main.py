@@ -1,3 +1,6 @@
+import prediction
+import market
+import time
 """
 This is the main controller module of the power grid.
 
@@ -5,7 +8,7 @@ it effectively acts as the controller for the entire power grid staying in an in
 calling relevant modules when necessary.
 
 Typical usage example:
-controller = Main(distributionObject,listOfProducerObjects)
+controller = Main(substationObject,listOfProducerObjects)
 controller.Iterate()
 """
 class Main():
@@ -14,18 +17,18 @@ class Main():
 
     it has one public method Iterate()
     """
-    def __init__(self, distribution, producers):
+    def __init__(self, substation, producers):
         """
         the initialiser for the Main class
 
         Args:
-            distribution: a distribution object
+            substation: a substation object
             producers: a list of producer objects
         """
-        self.distribution = distribution
+        self.substation = substation
         self.producers = producers
-        self.prediction = Prediction()
-        self.market = Market()
+        self.prediction = prediction.Prediction()
+        self.market = market.Market(producers)
 
     def Iterate(self):
         """
@@ -35,20 +38,35 @@ class Main():
         to send information or run processes on each object.
         """
         time = 0
+        
         while True:
-            usage = self.getUsage(time)
-            totalProduction = self.pollProducers()
 
-            predictions = self.getPredictions(usage)
-            winners, price = self.maket.getWinners()
+            try:
+                usage = self.getUsage()
+                totalProduction = self.pollProducers()
 
-            self.sendOrders(winners)
-            self.distribution.receivePrice(price)
+                print("<------------------------------------>")
 
-            time += 1
+                if totalProduction <= usage:
+                    print('FAIL -', usage - totalProduction)
+                print("Time:", time/4)
+                print("Usage:",usage)
+                print("Total Production:",totalProduction)
+                print()
+            
+                predictions = self.getPredictions(usage)
+                winners = self.market.GetWinners(predictions)
 
-    def getUsage(self, time):
-        return self.distribution.usage(time)
+                self.sendOrders(winners)
+
+                time += 1
+
+            except:
+                print("No more usage data")
+                break
+
+    def getUsage(self):
+        return self.substation.getUsage()
 
     def pollProducers(self):
         """
@@ -63,7 +81,7 @@ class Main():
         """
         total_energy = 0
         for i in self.producers:
-            total_energy += i.currentProduction
+            total_energy += i.current_production
         return total_energy
 
     def getPredictions(self, usage):
@@ -77,13 +95,11 @@ class Main():
         producers list.
 
         Args:
-        winners: a dict with each producer as a key a list of how much energy they should produce
-                for a given time period in the future 
+        winners: a dict with each producer as a key a list of bid objects containing 
+        		how much energy they should producefor a given time period in the future 
                 eg.
-                {
-                	producer: [amount,amount.....],
-                }
+                {<producer_object>: [<bid_object>,<bid_object>.....]} 
         """
         for i in self.producers:
-            i.receiveOrder(winners[i])
+        	i.receiveOrder(winners[i])
 

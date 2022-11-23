@@ -40,22 +40,22 @@ class TestPrediction(unittest.TestCase):
         
     def test_check_day_value(self):
         self.setup()
-        self.prediction.time = 0
+        self.prediction._time = 0
         self.prediction.day = 0
         self.prediction.checkDayValue()
         self.assertEqual(self.prediction.day, 1, 'day value was not incremented')
         
-        self.prediction.time = 0
+        self.prediction._time = 0
         self.prediction.day = 4
         self.prediction.checkDayValue()
         self.assertEqual(self.prediction.day, 0, 'day value was not reset to 0')
         
-        self.prediction.time = 23.75
+        self.prediction._time = 23.75
         self.prediction.day = 1
         self.prediction.checkDayValue()
         self.assertEqual(self.prediction.day, 0, 'day value was not decremented')
         
-        self.prediction.time = 23.75
+        self.prediction._time = 23.75
         self.prediction.day = 0
         self.prediction.checkDayValue()
         self.assertEqual(self.prediction.day, 4, 'day value did not underflow back to 4')
@@ -83,7 +83,7 @@ class TestPrediction(unittest.TestCase):
         
     def test_update_historical_data(self):
         self.setup()
-        self.prediction.time = 0
+        self.prediction._time = 0
         self.prediction.day = 0
         self.prediction.predict(1234321)
         
@@ -96,7 +96,7 @@ class TestPrediction(unittest.TestCase):
     def test_predict(self):
         self.setup()
         previous_value = self.prediction.history[-1]
-        self.prediction.time = 5
+        self.prediction._time = 5
         historical_prediction = self.prediction.predict(44)
         self.assertNotEqual(previous_value, self.prediction.history[-1], 'history attribute not updated with current usage')
         self.assertEqual(self.prediction.history[-1], 44)
