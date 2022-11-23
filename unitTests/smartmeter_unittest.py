@@ -1,7 +1,7 @@
 import unittest
 import sqlite3 as sl
 import csv
-from smartmeter import SmartMeter
+from gridClasses.smartmeter import SmartMeter
 
 class TestSmartMeter(unittest.TestCase):
 

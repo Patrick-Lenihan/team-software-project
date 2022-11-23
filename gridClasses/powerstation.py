@@ -5,7 +5,7 @@ poducers.
 
 '''
 from random import randint
-from bid import Bid
+from controller.bid import Bid
 import queue
 
 class Producer(object):

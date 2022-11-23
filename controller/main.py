@@ -1,5 +1,5 @@
-import prediction
-import market
+import controller.prediction as prediction
+import controller.market as market
 import time
 """
 This is the main controller module of the power grid.

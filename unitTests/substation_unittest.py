@@ -1,7 +1,7 @@
 import unittest
 import sqlite3 as sl
-from substation import Substation
-from smartmeter import SmartMeter
+from gridClasses.substation import Substation
+from gridClasses.smartmeter import SmartMeter
 class TestSubstation(unittest.TestCase):
 
     def test_get_smart_meter_usage(self):

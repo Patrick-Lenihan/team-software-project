@@ -1,4 +1,4 @@
-from powerstation import *
+from gridClasses.powerstation import *
 import unittest
 
 class TestProducer(unittest.TestCase):

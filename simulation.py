@@ -1,9 +1,9 @@
 import csv
 import sqlite3
-import main
-import substation
-import smartmeter
-import powerstation
+import controller.main as main
+import gridClasses.substation as substation
+import gridClasses.smartmeter as smartmeter
+import gridClasses.powerstation as powerstation
 """simulation is the simulation envirnonment the the main controler runs 
 in.
 
@@ -21,7 +21,7 @@ class Simulation(object):
     def __init__(self):
         self._num_meters, self._main_substation = self.generateDistribution()
         producers = self.generateProducers()
-        self.setUsages("usage.csv")
+        self.setUsages("eirgridData/usage.csv")
         self.setHistory()
         controller = main.Main(self._main_substation, producers)
         controller.Iterate()
@@ -111,7 +111,7 @@ class Simulation(object):
 					day INTEGER
 					);""")
             cursor = conn.cursor()
-            usage_file = open('initial_prediction.csv')
+            usage_file = open('eirgridData/initial_prediction.csv')
             usage_reader = csv.reader(usage_file)
             next(usage_reader)
             time = 0

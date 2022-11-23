@@ -1,4 +1,4 @@
-from bid import Bid
+from controller.bid import Bid
 """This is the Market module used to decide what producers can produce electricity.
 	
 	The Market mondule is used to decide what producers have the controlers authority
