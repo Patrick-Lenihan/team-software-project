@@ -42,7 +42,6 @@ class Market(object):
 		"""
 		bids_by_time = self.requestBids(predictions)
 		winners = self.selectWinners(predictions,bids_by_time,self._producers)
-		#print("gw winners: ",winners)
 		return winners
 
 	def requestBids(self,predictions):
