@@ -1,7 +1,7 @@
-from market import *
+from controller.market import *
 import unittest
-from bid import Bid
-from powerstation import Producer
+from controller.bid import Bid
+from gridClasses.powerstation import Producer
 
 class TestPQ(unittest.TestCase):
 	def test_add(self):

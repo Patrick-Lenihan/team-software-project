@@ -1,4 +1,4 @@
-from powerstation import *
+from gridClasses.powerstation import *
 import unittest
 
 class TestProducer(unittest.TestCase):
@@ -34,7 +34,8 @@ class TestFossilFuelPlant(unittest.TestCase):
 			],
 		"max_output":50,
 		"ramp_up_limit":10,
-		"wanted_output": 10
+		"wanted_output": 10,
+		"output": 0
 		},{
 		"orders":[
 				Bid(0,0,10,0),
@@ -43,7 +44,8 @@ class TestFossilFuelPlant(unittest.TestCase):
 			],
 		"max_output":70,
 		"ramp_up_limit":20,
-		"wanted_output": 20
+		"wanted_output": 20,
+		"output": 0
 		},{"orders":[
 				Bid(0,0,10,0),
 				Bid(0,0,20,0),
@@ -51,7 +53,8 @@ class TestFossilFuelPlant(unittest.TestCase):
 			],
 		"max_output":70,
 		"ramp_up_limit":20,
-		"wanted_output": 15
+		"wanted_output": 15,
+		"output": 0
 		},{"orders":[
 				Bid(0,0,20,0),
 				Bid(0,0,20,0),
@@ -59,7 +62,8 @@ class TestFossilFuelPlant(unittest.TestCase):
 			],
 		"max_output":20,
 		"ramp_up_limit":20,
-		"wanted_output": 20
+		"wanted_output": 20,
+		"output": 0
 		},{"orders":[
 				Bid(0,0,10,0),
 				Bid(0,0,20,0),
@@ -68,13 +72,14 @@ class TestFossilFuelPlant(unittest.TestCase):
 			],
 		"max_output":70,
 		"ramp_up_limit":10,
-		"wanted_output": 10
+		"wanted_output": 10,
+		"output": 20
 		}]
 		for test in tests:
 			producer = FossilFuelPlant(0,0,test["max_output"],test["ramp_up_limit"])
+			producer.setOutput(test["output"])
 			producer.receiveOrder(test["orders"])
 			self.assertEqual(producer.output, test["wanted_output"])
-
 
 class TestWindFarm(unittest.TestCase):
 	def test_getFutureBid(self):

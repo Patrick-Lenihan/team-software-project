@@ -1,4 +1,4 @@
-from bid import Bid
+from controller.bid import Bid
 """This is the Market module used to decide what producers can produce electricity.
 	
 	The Market mondule is used to decide what producers have the controlers authority
@@ -42,7 +42,6 @@ class Market(object):
 		"""
 		bids_by_time = self.requestBids(predictions)
 		winners = self.selectWinners(predictions,bids_by_time,self._producers)
-		#print("gw winners: ",winners)
 		return winners
 
 	def requestBids(self,predictions):
