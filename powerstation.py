@@ -151,7 +151,7 @@ class FossilFuelPlant(Producer):
 
         if 0 < jumps[0]:
             self.startRampUp(jumps[0])
-        else: self.rampDown(jumps[0])
+        else:self.rampDown(jumps[0]*-1)
     def getElectricityFromOrders(self,orders):
         for i in range(len(orders)):
             orders[i] = orders[i].amount_electrictiy
