@@ -12,7 +12,7 @@ class Substation(object):
     The Substation receives data from Smart Meters and passes it on to the controller.
     '''
 
-    def __init__(self, usage, users):
+    def __init__(self, usage, users,substations):
 
         '''
         The initialiser for the meter class
@@ -24,6 +24,7 @@ class Substation(object):
 
         self._usage = usage
         self._users = users
+        self._substations = substations
 
     def getSmartMeterUsage(self):
 
@@ -33,6 +34,8 @@ class Substation(object):
         self._usage = 0
         for user in self._users:
             self._usage += user.updateUsage()
+        for substation in self._substations:
+            self._usage += substation.getUsage()
 
     def getUsage(self):
 

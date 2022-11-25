@@ -17,18 +17,20 @@ class Main():
 
     it has one public method Iterate()
     """
-    def __init__(self, substation, producers):
+    def __init__(self, main_substation, producers,substations,smartMeters):
         """
         the initialiser for the Main class
 
         Args:
-            substation: a substation object
+            main_substation: a substation object
             producers: a list of producer objects
         """
-        self.substation = substation
+        self.main_substation = main_substation
         self.producers = producers
         self.prediction = prediction.Prediction()
         self.market = market.Market(producers)
+        self.substations = substations
+        self.smartMeters = smartMeters
 
     def Iterate(self):
         """
@@ -66,7 +68,7 @@ class Main():
                 break
 
     def getUsage(self):
-        return self.substation.getUsage()
+        return self.main_substation.getUsage()
 
     def pollProducers(self):
         """
