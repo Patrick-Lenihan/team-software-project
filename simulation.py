@@ -92,6 +92,10 @@ class Simulation(object):
         producers = []
         producers.append(powerstation.Producer(3.35, 0, 3000))
         producers.append(powerstation.Producer(2.35, 1, 4000))
+        producers.append(powerstation.FossilFuelPlant(2.00,1,2000,500))
+        producers.append(powerstation.Producer(2.36, 1, 2000))
+        battery = powerstation.Battery(2000,1000)
+        producers.append(powerstation.WindFarm(2.34,0,2000,battery))
         return producers
 
     def setHistory(self):

@@ -126,7 +126,7 @@ class MultiLevelQueue(object):
 			if total == 0:
 				for i in winners.keys():
 					if len(winners[i]) < len(winners[winner.producer]):
-						winners[i].append("Nothing")
+						winners[i].append(Bid(0,i,0,0))
 				return winners
 
 

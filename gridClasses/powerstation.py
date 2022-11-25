@@ -247,7 +247,8 @@ class WindFarm(Producer):
             bids.append(Bid(self.price,self,amount_to_bid,self.emmision_level))
         return bids
     def receiveOrder(self,orders):
-        self.battery.discharge(orders[i])
+        self.battery.discharge(orders[0].amount_electrictiy)
+        self.calculateNextOutput()
             
 
 class HydroDam(Producer):

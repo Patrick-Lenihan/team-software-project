@@ -42,7 +42,6 @@ class Main():
         time = 0
         
         while True:
-
             try:
                 usage = self.getUsage()
                 totalProduction = self.pollProducers()
@@ -62,10 +61,10 @@ class Main():
                 self.sendOrders(winners)
 
                 time += 1
-
             except:
                 print("No more usage data")
                 break
+
 
     def getUsage(self):
         return self.main_substation.getUsage()
