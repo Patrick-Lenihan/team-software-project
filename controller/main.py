@@ -45,13 +45,7 @@ class Main():
                 usage = self.getUsage()
                 totalProduction = self.pollProducers()
                 
-                
-                if totalProduction > usage:
-                    for substation in self.substations:
-                        substation.store_battery((totalProduction-usage)/len(self.substations))
-                else:
-                    for substation in self.substations:
-                        totalProduction += substation.discharge_battery((usage-totalProduction)/len(self.substations))
+                totalProduction, usage, battery_discharge, battery_level = self.manageBatteries(totalProduction, usage)
                 
                 print("<------------------------------------>")
                 
@@ -59,7 +53,10 @@ class Main():
                     print('FAIL -', usage - totalProduction)
                 print("Time:", time/4)
                 print("Usage:",usage)
+                if battery_discharge != 0:
+                    print('Battery Discharge:',battery_discharge)
                 print("Total Production:",totalProduction)
+                print("Battery Level", battery_level)
                 print()
             
                 predictions = self.getPredictions(usage)
@@ -109,5 +106,22 @@ class Main():
                 {<producer_object>: [<bid_object>,<bid_object>.....]} 
         """
         for i in self.producers:
-        	i.receiveOrder(winners[i])
+            i.receiveOrder(winners[i])
 
+    def manageBatteries(self, totalProduction, usage):
+        battery_discharge = 0
+        battery_level = 0
+        if totalProduction > usage:
+            energy_to_store = totalProduction - usage
+            for substation in self.substations:
+                energy_to_store = substation.store_battery(energy_to_store)
+                battery_level += substation._battery.getCurrentlyStored()
+        else:
+            battery_discharge = totalProduction
+            for substation in self.substations:
+                if totalProduction < usage:
+                    totalProduction += substation.discharge_battery((usage-totalProduction))
+                battery_level += substation._battery.getCurrentlyStored()
+            battery_discharge = totalProduction - battery_discharge
+            
+        return totalProduction, usage, battery_discharge, battery_level

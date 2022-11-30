@@ -24,7 +24,7 @@ class Substation(object):
 
         self._usage = usage
         self._users = users
-        self._battery = SubstationBattery(100, 0)
+        self._battery = SubstationBattery(150, 150)
         self._substations = substations
 
     def getSmartMeterUsage(self):
@@ -53,7 +53,7 @@ class Substation(object):
         return self._battery.discharge(amount)
         
     def store_battery(self, amount):
-        self._battery.store(amount)
+        return self._battery.store(amount)
         
         
 class SubstationBattery(Battery):
@@ -64,7 +64,16 @@ class SubstationBattery(Battery):
                     facility can store.
         currently_stored: the amount of electricty currenly stored
                             in the facility.
+                            
+    returns: excess electricity unable to store
     '''
+    def store(self,amount):
+        starting_level = self.currently_stored
+        
+        self.currently_stored += amount
+        if self.currently_stored > self.max_stored:
+            self.currently_stored = self.max_stored
+        return amount - (self.currently_stored - starting_level)
 
     def discharge(self, amount_needed):
         difference = 0
@@ -73,3 +82,6 @@ class SubstationBattery(Battery):
             difference = self.currently_stored
             self.currently_stored = 0
         return amount_needed + difference
+    
+    def getCurrentlyStored(self):
+        return self.currently_stored

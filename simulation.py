@@ -24,6 +24,8 @@ class Simulation(object):
         self.setUsages("eirgridData/usage.csv")
         self.setHistory()
         controller = main.Main(self._substations[0], producers,self._substations, self._smartmeters)
+        winners = controller.market.GetWinners([5000,0,0,0,0]) # starting production
+        controller.sendOrders(winners)
         controller.Iterate()
 
     def setUsages(self, usage_csv):
