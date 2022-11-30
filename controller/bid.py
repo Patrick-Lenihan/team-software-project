@@ -15,6 +15,3 @@ class Bid(object):
 		self.producer = producer
 		self.amount_electrictiy = amount_electrictiy
 		self.level = level
-
-	def repr(self):
-		return "bid: "+str(self.amount_electrictiy)

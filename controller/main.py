@@ -31,6 +31,7 @@ class Main():
         self.market = market.Market(producers)
         self.substations = substations
         self.smartMeters = smartMeters
+        self.seq_num = 0
 
     def Iterate(self):
         """
@@ -43,9 +44,12 @@ class Main():
         while True:
             try:
                 usage = self.getUsage()
+                self.seq_num += 1
                 totalProduction = self.pollProducers()
                 
                 totalProduction, usage, battery_discharge, battery_level = self.manageBatteries(totalProduction, usage)
+                
+                self.checkFaultDetection()
                 
                 print("<------------------------------------>")
                 
@@ -125,3 +129,8 @@ class Main():
             battery_discharge = totalProduction - battery_discharge
             
         return totalProduction, usage, battery_discharge, battery_level
+    
+    def checkFaultDetection(self):
+        for substation in self.substations:
+            if not substation.hasConnection(self.seq_num):
+                print("fault detected!")

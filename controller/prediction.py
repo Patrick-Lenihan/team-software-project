@@ -127,6 +127,7 @@ class Prediction():
         self._time = self.checkTimeValue(self._time)
         self.checkDayValue()
         
+        print(historical_prediction)
         return historical_prediction
                 
 if __name__ == '__main__':

@@ -82,7 +82,7 @@ class Simulation(object):
         smartmeters = [smartmeter.SmartMeter(), smartmeter.SmartMeter(),smartmeter.SmartMeter(),smartmeter.SmartMeter()]
         second_substation = substation.Substation(0, smartmeters[0:2],[])
         main_substation = substation.Substation(0, smartmeters[2:],[second_substation])
-        substations = [main_substation,second_substation]
+        substations = [main_substation,second_substation,substation.Substation(0,[],[])]
 
         return smartmeters,substations
 

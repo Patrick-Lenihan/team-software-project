@@ -26,6 +26,7 @@ class Substation(object):
         self._users = users
         self._battery = SubstationBattery(150, 150)
         self._substations = substations
+        self.seq_num = 0
 
     def getSmartMeterUsage(self):
 
@@ -47,6 +48,7 @@ class Substation(object):
             usage: the amount of electricity being supplied through substation to homes
         '''
         self.getSmartMeterUsage()
+        self.seq_num +=1
         return self._usage
     
     def discharge_battery(self, amount):
@@ -54,6 +56,11 @@ class Substation(object):
         
     def store_battery(self, amount):
         return self._battery.store(amount)
+
+    def hasConnection(self,seq_num):
+        if self.seq_num == seq_num:
+            return True
+        return False
         
         
 class SubstationBattery(Battery):
