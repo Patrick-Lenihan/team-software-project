@@ -31,6 +31,7 @@ class Main():
         self.market = market.Market(producers)
         self.substations = substations
         self.smartMeters = smartMeters
+        self.seq_num = 0
 
     def Iterate(self):
         """
@@ -43,15 +44,20 @@ class Main():
         while True:
             try:
                 usage = self.getUsage()
+                self.seq_num += 1
                 totalProduction = self.pollProducers()
                 
                 
                 if totalProduction > usage:
                     for substation in self.substations:
                         substation.store_battery((totalProduction-usage)/len(self.substations))
+                        if not substation.hasConnection(self.seq_num):
+                            print("fault detected!")
                 else:
                     for substation in self.substations:
                         totalProduction += substation.discharge_battery((usage-totalProduction)/len(self.substations))
+                        if not substation.hasConnection(self.seq_num):
+                            print("fault detected!")
                 
                 print("<------------------------------------>")
                 
