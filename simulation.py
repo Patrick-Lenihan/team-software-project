@@ -19,11 +19,11 @@ class Simulation(object):
     """
 
     def __init__(self):
-        self._num_meters, self._main_substation = self.generateDistribution()
+        self._smartmeters, self._substations = self.generateDistribution()
         producers = self.generateProducers()
         self.setUsages("eirgridData/usage.csv")
         self.setHistory()
-        controller = main.Main(self._main_substation, producers)
+        controller = main.Main(self._substations[0], producers,self._substations, self._smartmeters)
         controller.Iterate()
 
     def setUsages(self, usage_csv):
@@ -66,7 +66,7 @@ class Simulation(object):
         # we are deviding by the total usage by the number of
         # smart meteres here because want to get a realistic number.
         # for each smart meter.
-        usage_per_meter = int(row[1])//self._num_meters
+        usage_per_meter = int(row[1])//len(self._smartmeters)
         cursor.execute("INSERT INTO usage VALUES (?, ?)",
                        (time, usage_per_meter))
 
@@ -77,10 +77,12 @@ class Simulation(object):
         substations if modified.
         creates the substation with smart meters connected to it.
         """
-        smartmeter_list = [smartmeter.SmartMeter(), smartmeter.SmartMeter()]
-        main_substation = substation.Substation(0, smartmeter_list)
+        smartmeters = [smartmeter.SmartMeter(), smartmeter.SmartMeter(),smartmeter.SmartMeter(),smartmeter.SmartMeter()]
+        second_substation = substation.Substation(0, smartmeters[0:2],[])
+        main_substation = substation.Substation(0, smartmeters[2:],[second_substation])
+        substations = [main_substation,second_substation]
 
-        return len(smartmeter_list), main_substation
+        return smartmeters,substations
 
     def generateProducers(self):
         """generates a list of producers that the main contoller can use.
@@ -90,6 +92,10 @@ class Simulation(object):
         producers = []
         producers.append(powerstation.Producer(3.35, 0, 3000))
         producers.append(powerstation.Producer(2.35, 1, 4000))
+        producers.append(powerstation.FossilFuelPlant(2.00,1,2000,500))
+        producers.append(powerstation.Producer(2.36, 1, 2000))
+        battery = powerstation.Battery(2000,1000)
+        producers.append(powerstation.WindFarm(2.34,0,2000,battery))
         return producers
 
     def setHistory(self):
