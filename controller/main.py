@@ -17,18 +17,20 @@ class Main():
 
     it has one public method Iterate()
     """
-    def __init__(self, substation, producers):
+    def __init__(self, main_substation, producers,substations,smartMeters):
         """
         the initialiser for the Main class
 
         Args:
-            substation: a substation object
+            main_substation: a substation object
             producers: a list of producer objects
         """
-        self.substation = substation
+        self.main_substation = main_substation
         self.producers = producers
         self.prediction = prediction.Prediction()
         self.market = market.Market(producers)
+        self.substations = substations
+        self.smartMeters = smartMeters
 
     def Iterate(self):
         """
@@ -38,16 +40,13 @@ class Main():
         to send information or run processes on each object.
         """
         time = 0
-        
         while True:
-
             try:
                 usage = self.getUsage()
                 totalProduction = self.pollProducers()
-
                 print("<------------------------------------>")
 
-                if totalProduction <= usage:
+                if totalProduction < usage:
                     print('FAIL -', usage - totalProduction)
                 print("Time:", time/4)
                 print("Usage:",usage)
@@ -60,13 +59,13 @@ class Main():
                 self.sendOrders(winners)
 
                 time += 1
-
             except:
                 print("No more usage data")
                 break
 
+
     def getUsage(self):
-        return self.substation.getUsage()
+        return self.main_substation.getUsage()
 
     def pollProducers(self):
         """
