@@ -40,15 +40,13 @@ class Main():
         to send information or run processes on each object.
         """
         time = 0
-        
         while True:
             try:
                 usage = self.getUsage()
                 totalProduction = self.pollProducers()
-
                 print("<------------------------------------>")
 
-                if totalProduction <= usage:
+                if totalProduction < usage:
                     print('FAIL -', usage - totalProduction)
                 print("Time:", time/4)
                 print("Usage:",usage)

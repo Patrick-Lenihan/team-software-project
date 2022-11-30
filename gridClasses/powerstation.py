@@ -61,7 +61,6 @@ class Producer(object):
             self.output = max_output
     def __hash__(self):
         return hash((self.output,self.price,self.max_output,self.emmision_level))
-
     
     current_production = property(getOutput,setOutput)
 
@@ -248,6 +247,7 @@ class WindFarm(Producer):
         return bids
     def receiveOrder(self,orders):
         self.battery.discharge(orders[0].amount_electrictiy)
+        self.output = orders[0].amount_electrictiy
         self.calculateNextOutput()
             
 
