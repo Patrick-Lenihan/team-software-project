@@ -58,7 +58,7 @@ class Producer(object):
         '''
         self.output = orders[0].amount_electrictiy
         if self.max_output < self.output:
-            self.output = max_output
+            self.output = self.max_output
     def __hash__(self):
         return hash((self.output,self.price,self.max_output,self.emmision_level))
 

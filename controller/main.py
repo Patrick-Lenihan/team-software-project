@@ -25,7 +25,7 @@ class Main():
             substation: a substation object
             producers: a list of producer objects
         """
-        self.substation = substation
+        self.substations = [substation]
         self.producers = producers
         self.prediction = prediction.Prediction()
         self.market = market.Market(producers)
@@ -44,10 +44,18 @@ class Main():
             try:
                 usage = self.getUsage()
                 totalProduction = self.pollProducers()
-
+                
+                
+                if totalProduction > usage:
+                    for substation in self.substations:
+                        substation.store_battery((totalProduction-usage)/len(self.substations))
+                else:
+                    for substation in self.substations:
+                        totalProduction += substation.discharge_battery((usage-totalProduction)/len(self.substations))
+                
                 print("<------------------------------------>")
-
-                if totalProduction <= usage:
+                
+                if totalProduction < usage:
                     print('FAIL -', usage - totalProduction)
                 print("Time:", time/4)
                 print("Usage:",usage)
@@ -66,7 +74,10 @@ class Main():
                 break
 
     def getUsage(self):
-        return self.substation.getUsage()
+        total = 0
+        for substation in self.substations:
+            total += substation.getUsage()
+        return total
 
     def pollProducers(self):
         """
