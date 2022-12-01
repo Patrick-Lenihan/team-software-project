@@ -1,3 +1,4 @@
+import os
 import csv
 import sqlite3
 import controller.main as main
@@ -21,14 +22,14 @@ class Simulation(object):
     def __init__(self):
         self._smartmeters, self._substations = self.generateDistribution()
         producers = self.generateProducers()
-        self.setUsages("eirgridData/usage.csv")
+        self.setUsages("eirgridData/usage")
         self.setHistory()
         controller = main.Main(self._substations[0], producers,self._substations, self._smartmeters)
         winners = controller.market.GetWinners([5000,0,0,0,0]) # starting production
         controller.sendOrders(winners)
         controller.Iterate()
 
-    def setUsages(self, usage_csv):
+    def setUsages(self, usageDir):
         """setUsages reads in the passes file path to 
         a csv and creates the aplications database.
 
@@ -46,15 +47,19 @@ class Simulation(object):
                                         the usage information.
         """
         conn, cursor = self.creatDatabase()
-        usage_file = open(usage_csv)
-        usage_reader = csv.reader(usage_file)
-        next(usage_reader)
-        rows = []
-        time = 0
-        for row in usage_reader:
-            self.addRow2DB(cursor, time, row)
-            time += 0.25
-        usage_file.close()
+        time_offset = 0
+        for file in os.listdir(usageDir):
+            usage_file = open(usageDir+"/"+file)
+            print(usageDir+"/"+file)
+            usage_reader = csv.reader(usage_file)
+            next(usage_reader)
+            rows = []
+            time = 0
+            for row in usage_reader:
+                self.addRow2DB(cursor, time_offset+time, row)
+                time += 0.25
+            usage_file.close()
+            time_offset += 24.0
         conn.commit()
 
     def creatDatabase(self):

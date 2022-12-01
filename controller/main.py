@@ -41,6 +41,7 @@ class Main():
         to send information or run processes on each object.
         """
         time = 0
+        fails = 0 
         while True:
             try:
                 usage = self.getUsage()
@@ -54,6 +55,7 @@ class Main():
                 print("<------------------------------------>")
                 
                 if totalProduction < usage:
+                    fails +=1
                     print('FAIL -', usage - totalProduction)
                 print("Time:", time/4)
                 print("Usage:",usage)
@@ -71,6 +73,7 @@ class Main():
                 time += 1
             except:
                 print("No more usage data")
+                print("num fails:",fails)
                 break
 
 
