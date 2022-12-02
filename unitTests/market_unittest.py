@@ -61,8 +61,8 @@ class TestMarket(unittest.TestCase):
 		winners = test_market.GetWinners(predictions)
 		wanted_results = {producers[0]:[Bid(1.3,producers[0],200,1),Bid(1.3,producers[0],200,1),Bid(1.3,producers[0],200,1)],
 						  producers[1]:[Bid(1.6,producers[1],300,1),Bid(1.6,producers[1],100,1),Bid(1.6,producers[1],300,1)],
-						  producers[2]:["Nothing","Nothing",Bid(2.4,producers[2],300,2)],
-						  producers[3]:["Nothing","Nothing",Bid(1.4,producers[3],200,3)],
+						  producers[2]:[Bid(0,0,0,0),Bid(0,0,0,0),Bid(2.4,producers[2],300,2)],
+						  producers[3]:[Bid(0,0,0,0),Bid(0,0,0,0),Bid(1.4,producers[3],200,3)],
 						  }
 		#print(winners,"blip",wanted_results)
 		for i in producers:

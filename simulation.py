@@ -27,7 +27,7 @@ class Simulation(object):
         controller = main.Main(self._substations[0], producers,self._substations, self._smartmeters)
         winners = controller.market.GetWinners([5000,0,0,0,0]) # starting production
         controller.sendOrders(winners)
-        controller.Iterate()
+        self.results = controller.Iterate()
 
     def setUsages(self, usageDir):
         """setUsages reads in the passes file path to 
@@ -49,6 +49,7 @@ class Simulation(object):
         conn, cursor = self.creatDatabase()
         time_offset = 0
         for file in os.listdir(usageDir):
+            print(file)
             usage_file = open(usageDir+"/"+file)
             print(usageDir+"/"+file)
             usage_reader = csv.reader(usage_file)
@@ -87,7 +88,7 @@ class Simulation(object):
         smartmeters = [smartmeter.SmartMeter(), smartmeter.SmartMeter(),smartmeter.SmartMeter(),smartmeter.SmartMeter()]
         second_substation = substation.Substation(0, smartmeters[0:2],[])
         main_substation = substation.Substation(0, smartmeters[2:],[second_substation])
-        substations = [main_substation,second_substation,substation.Substation(0,[],[])]
+        substations = [main_substation,second_substation]#substation.Substation(0,[],[])
 
         return smartmeters,substations
 
@@ -139,6 +140,8 @@ class Simulation(object):
                     day += 1
             usage_file.close()
             conn.commit()
+    def getResults(self):
+        return self.results
 
 if __name__ == "__main__":
     sim = Simulation()

@@ -42,6 +42,7 @@ class Main():
         """
         time = 0
         fails = 0 
+        result_info = dict()
         while True:
             try:
                 usage = self.getUsage()
@@ -50,6 +51,7 @@ class Main():
                 
                 totalProduction, usage, battery_discharge, battery_level = self.manageBatteries(totalProduction, usage)
                 
+            
                 self.checkFaultDetection()
                 
                 print("<------------------------------------>")
@@ -70,11 +72,13 @@ class Main():
 
                 self.sendOrders(winners)
 
+                result_info[time/4] = {"usage":usage,"totalProduction":totalProduction,"battery_discharge":battery_discharge,"battery_level":battery_level,"winners":winners}
+
                 time += 1
             except:
                 print("No more usage data")
                 print("num fails:",fails)
-                break
+                return result_info, fails, self.checkFaultDetection()
 
 
     def getUsage(self):
@@ -137,3 +141,5 @@ class Main():
         for substation in self.substations:
             if not substation.hasConnection(self.seq_num):
                 print("fault detected!")
+                return True
+        return False
