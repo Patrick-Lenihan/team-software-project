@@ -52,6 +52,7 @@ class SmartMeter(object):
 
             data = cursor.fetchall()
             
+
             for value in data:
                 self._usage = value[1]
                 return self._usage

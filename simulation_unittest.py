@@ -17,8 +17,8 @@ class TestNormal(unittest.TestCase):
         self.assertEqual(0,fails,"whoops a nationwide blackout occored")
     def test_for_no_fault(self):
         sim = simulation.Simulation()
-        _,_,hasFault= sim.getResults()
-        self.assertEqual(False,hasFault,"a breakage has been detected without atualy being there")
+        _,_,has_fault= sim.getResults()
+        self.assertEqual(False,has_fault,"a breakage has been detected without atualy being there")
 
 class SimWithFault(simulation.Simulation):
     def __init__(self):
@@ -34,8 +34,8 @@ class SimWithFault(simulation.Simulation):
 class TestFault(unittest.TestCase):
     def test_for_fault(self):
         sim = SimWithFault()
-        _,_,hasFault= sim.getResults()
-        self.assertEqual(True,hasFault,"a breakage has occored in the line without being detected")
+        _,_,has_fault= sim.getResults()
+        self.assertEqual(True,has_fault,"a breakage has occored in the line without being detected")
     def test_NoFails(self):
         sim = simulation.Simulation()
         _, fails, _= sim.getResults()
@@ -59,27 +59,27 @@ class SimWithUneededFosilFuels(simulation.Simulation):
 
 class TestEnvironmentalyFriendlieness(unittest.TestCase):
     def test_does_not_fossil_fuels(self):
-        FossilFuelBid = False
+        fossil_fuel_bid = False
         sim = SimWithUneededFosilFuels()
-        results,_,hasFault = sim.getResults()
+        results,_,has_fault = sim.getResults()
         for i in results:
-            for valList in results[i]["winners"].values():
-                for val in valList:
+            for val_list in results[i]["winners"].values():
+                for val in val_list:
                     if isinstance(val,int):
                         continue
                     if isinstance(val.producer,powerstation.FossilFuelPlant):
                         if val.amount_electrictiy != 0:
-                            FossilFuelBid = True
+                            fossil_fuel_bid = True
                         
-        self.assertEqual(False,FossilFuelBid,"a FossilFuelPlant was used unnecessarily")
+        self.assertEqual(False,fossil_fuel_bid,"a FossilFuelPlant was used unnecessarily")
     def test_NoFails(self):
         sim = SimWithUneededFosilFuels()
         _, fails, _= sim.getResults()
         self.assertEqual(0,fails,"whoops a nationwide blackout occored")
     def test_for_no_fault(self):
         sim = SimWithUneededFosilFuels()
-        _,_,hasFault= sim.getResults()
-        self.assertEqual(False,hasFault,"a breakage has been detected without atualy being there")
+        _,_,has_fault= sim.getResults()
+        self.assertEqual(False,has_fault,"a breakage has been detected without atualy being there")
 
 
 if __name__ == "__main__":

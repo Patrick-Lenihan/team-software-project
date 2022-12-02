@@ -29,7 +29,7 @@ class Simulation(object):
         controller.sendOrders(winners)
         self.results = controller.Iterate()
 
-    def setUsages(self, usageDir):
+    def setUsages(self, usage_dir):
         """setUsages reads in the passes file path to 
         a csv and creates the aplications database.
 
@@ -48,10 +48,10 @@ class Simulation(object):
         """
         conn, cursor = self.creatDatabase()
         time_offset = 0
-        for file in os.listdir(usageDir):
+        for file in os.listdir(usage_dir):
             print(file)
-            usage_file = open(usageDir+"/"+file)
-            print(usageDir+"/"+file)
+            usage_file = open(usage_dir+"/"+file)
+            print(usage_dir+"/"+file)
             usage_reader = csv.reader(usage_file)
             next(usage_reader)
             rows = []
