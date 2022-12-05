@@ -98,19 +98,6 @@ class GUI():
             BESSText.grid(row = 0, column = 0, pady = 10)
             dischargeBattery = tk.Button(self.rightFrame, text = 'Discharge battery', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Discharge Battery'))
             dischargeBattery.grid(row = 1, column = 0, pady = 20, padx = 10)
-
-        def damDisplay(self = self):
-            for widget in self.rightFrame.winfo_children():
-                if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
-                    widget.grid_remove()
-
-            damText = tk.Label(self.rightFrame, text = 'Dam', font = 'calibri')
-            damText.grid(row = 0, column = 0, pady = 10)
-            checkWaterLevels = tk.Button(self.rightFrame, text = 'Check water levels', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Hydroelectric Dam Water Levels'))
-            checkWaterLevels.grid(row = 1, column = 0, pady = 20, padx = 10)
-
-            controllerText = tk.Label(self.rightFrame, text = 'Controller', font = 'calibri')
-            controllerText.grid(row = 0, column = 0, pady = 10)
            
         def productionDisplay(self = self):
             for widget in self.rightFrame.winfo_children():
@@ -160,6 +147,3 @@ class GUI():
         
         controller = tk.Button(self.mainAreaFrame, text = 'Controller', font = 'calibri', width = 15, bg ='white', relief = 'flat', state = 'disabled')
         controller.grid(row = 13, column = 1, pady = 20)
-        
-        dam = tk.Button(self.mainAreaFrame, text = 'Dam', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat', command = lambda: damDisplay())
-        dam.grid(row = 14, column = 1, pady = 100, padx = 20)
