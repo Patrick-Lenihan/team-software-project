@@ -4,6 +4,9 @@ import controller.main as main
 import gridClasses.substation as substation
 import gridClasses.smartmeter as smartmeter
 import gridClasses.powerstation as powerstation
+import tkinter as tk
+import gui
+
 """simulation is the simulation envirnonment the the main controler runs 
 in.
 
@@ -19,11 +22,11 @@ class Simulation(object):
     """
 
     def __init__(self):
-        self._num_meters, self._main_substation = self.generateDistribution()
+        self._num_meters, self.main_substation = self.generateDistribution()
         producers = self.generateProducers()
         self.setUsages("eirgridData/usage.csv")
         self.setHistory()
-        controller = main.Main(self._main_substation, producers)
+        controller = main.Main(self.main_substation, producers)
         controller.Iterate()
 
     def setUsages(self, usage_csv):
@@ -129,3 +132,6 @@ class Simulation(object):
 
 if __name__ == "__main__":
     sim = Simulation()
+    root = tk.Tk()
+    p = gui.GUI(root)
+    root.mainloop()
