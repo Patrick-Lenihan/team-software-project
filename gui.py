@@ -67,7 +67,6 @@ class GUI():
                 rows = []
 
                 for row in cur.execute('SELECT * FROM use_history;'):
-                    print(row)
                     rows.append(row)
 
                 #total day usage
@@ -97,7 +96,7 @@ class GUI():
             
             BESSText = tk.Label(self.rightFrame, text = 'BESS - Battery \n Energy Storage System', font = 'calibri')
             BESSText.grid(row = 0, column = 0, pady = 10)
-            dischargeBattery = tk.Button(self.rightFrame, text = 'Discharge battery', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: discharge_batteries(input("How much extra battery power is needed")))
+            dischargeBattery = tk.Button(self.rightFrame, text = 'Discharge battery', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: discharge_batteries(input("\nHow much extra battery power is needed: ")))
             dischargeBattery.grid(row = 1, column = 0, pady = 20, padx = 10)
            
         def productionDisplay(self = self):
@@ -135,14 +134,12 @@ class GUI():
             top.title('Battery')
             top.configure(background = '#181D27')
             
-            production, usage, battery_discharge, battery_level = self.manageBatteries(0, amount)
+            production, usage, battery_discharge, battery_level = self.main.manageBatteries(0, int(amount))
             
             data = tk.Text(top, width = 100, font = 'Calibri', fg = 'white', bg = '#181D27', relief = 'flat')
             data.insert(tk.END, 'Battery Discharge successful \n')
             data.insert(tk.END, str(battery_discharge) + ' - used\n')
             data.pack()
-
-            data.grid(top)
 
 
         #MAIN AREA BUTTONS
