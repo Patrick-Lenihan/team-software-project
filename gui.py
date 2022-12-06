@@ -1,13 +1,10 @@
 import tkinter as tk
-import tkinter.ttk as ttk
-from gridClasses import powerstation, smartmeter, substation
-import eirgridData
-import simulation
 import controller.main as main
 import sqlite3
 
 class GUI():
-    ''' '''
+    '''The GUI class is responsible for setting up and running the
+    TKinter interface to the controller.'''
 
     #CONSTRUCTOR
     def __init__(self, root):
@@ -17,7 +14,7 @@ class GUI():
         self.root.geometry('1000x650')
         self.root.configure(background = 'white')
 
-        #FRAMES
+        # MAIN FRAME - CONTAINS TOP-LEVEL BUTTONS
         frame = tk.Frame(root)
 
         self.mainAreaFrame = tk.Frame(self.root)
@@ -32,24 +29,9 @@ class GUI():
         self.mainAreaFrame.place(x = 10, y = 0, width = 700, height = 620)
 
         #RIGHT FRAME ACTIONS - DISPLAY BUTTONS IN RIGHT FRAME + THEIR ACTIONS
-        '''def substationDisplay(self = self):
-            for widget in self.rightFrame.winfo_children():
-                if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
-                    widget.grid_remove()
-            
-            substationText = tk.Label(self.rightFrame, text = 'Substation', font = 'calibri')
-            substationText.grid(row = 0, column = 0, pady = 10)
-            usageByTime = tk.Button(self.rightFrame, text = 'Daily usage by \n connected homes ????', font = 'calibri', width = 28, bg ='#52FFB8', relief = 'flat', command = lambda: open_popup('Total Energy Usage by Time', data = allHomesUsage()))
-            usageByTime.grid(row = 1, column = 0, pady = 20, padx = 10)
-
-            def dailyTotalHomeUsage():
-                conn = sqlite3.connect('app.db')
-                cur = conn.cursor()
-
-                for row in cur.execute('SELECT * FROM ')'''
-                    
-
         def smartMeterDisplay(self = self):
+            '''Function to display energy usage by connected households
+            for the past 5 days.  '''
             for widget in self.rightFrame.winfo_children():
                if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
                     widget.grid_remove()
@@ -61,6 +43,8 @@ class GUI():
             smartMeterUsage.grid(row = 1, column = 0, pady = 20, padx = 10)
 
             def totalHomeUsage():
+                ''' Function to fetch usage data from the controller database
+                and aggregate it for display. '''
                 conn = sqlite3.connect('app.db')
                 cur = conn.cursor()
                 rows = []
@@ -90,16 +74,34 @@ class GUI():
                 day.pack()
 
         def BESSDisplay(self = self):
+            '''Function to display information on energy levels stored in 
+            the substation batteries.'''
             for widget in self.rightFrame.winfo_children():
                 if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
                     widget.grid_remove()
             
-            BESSText = tk.Label(self.rightFrame, text = 'BESS - Battery \n Energy Storage System', font = 'calibri')
+            BESSText = tk.Label(self.rightFrame, text = 'BESS - Battery \n Energy Storage System', font = 'calibri', command = lambda: checkBatteryLevel())
             BESSText.grid(row = 0, column = 0, pady = 10)
-            dischargeBattery = tk.Button(self.rightFrame, text = 'Discharge battery', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Discharge Battery'))
-            dischargeBattery.grid(row = 1, column = 0, pady = 20, padx = 10)
-           
+            
+            def checkBatteryLevel():
+                levels = []
+                for substation in main.Main.substations:
+                    substation.getCurrentlyStored()
+
+                top = tk.Toplevel(root)
+                top.geometry('750x500')
+                top.configure(background = '#181D27')
+                data = tk.Text(top, width = 100, font = 'Calibri', fg = 'white', bg = '#181D27', relief = 'flat')
+                data.insert(tk.END, 'Energy currently stored in batteries: \n')
+
+                for item in levels:
+                    data.insert(tk.END, str(item) + '\n')
+                data.pack() 
+
         def productionDisplay(self = self):
+            '''
+            Function for calculating and displaying energy output from
+            all producers for the last 5 days. '''
             for widget in self.rightFrame.winfo_children():
                 if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
                     widget.grid_remove()
@@ -110,6 +112,8 @@ class GUI():
             checkProduction.grid(row = 1, column = 0, pady = 20, padx = 10)
 
             def checkProductionLevels():
+                '''Function to fetch energy production levels from all
+                producers and display it in a tkinter window.'''
                 level = main.Main.pollProducers(main)
 
                 top = tk.Toplevel(root)
@@ -128,6 +132,7 @@ class GUI():
         
             Args:
             define_title: Set a title for the popup window
+            data: Data to be displayed in the popup window
             '''
             top = tk.Toplevel(root)
             top.geometry('750x500')
