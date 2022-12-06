@@ -17,3 +17,4 @@ Our controller will monitor the usage levels of electricity within the system. I
 - place this file in the same directory as the downloaded programs
 - run *python3 simulation.py* from inside the downloaded directory. 
 - change simulation.py to represent the architecture you want.
+- run unit tests by running the command python3 -m unittest unitTests.<module_name>_unittest -v 
