@@ -23,7 +23,7 @@ class Simulation(object):
     """
 
     def __init__(self):
-        self._smartmeters, self._substations = self.generateDistribution()
+        self._num_meters, self.main_substation = self.generateDistribution()
         producers = self.generateProducers()
         self.setUsages("eirgridData/usage")
         self.setHistory()
