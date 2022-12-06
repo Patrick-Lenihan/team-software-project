@@ -47,7 +47,6 @@ class TestMultiLevelQueue(unittest.TestCase):
 		for i in range(len(test_bids_to_add)):
 			test_MLQ.add(test_bids_to_add[i])
 		for i in range(len(test_MLQ._top_level_list)):
-			#print("test_MLQ",get_amounts_bid(test_MLQ._top_level_list[i].q),"wr: ",wanted_result[i])
 			self.assertEqual(get_amounts_bid(test_MLQ._top_level_list[i].q),wanted_result[i])
 
 class TestMarket(unittest.TestCase):
@@ -61,16 +60,10 @@ class TestMarket(unittest.TestCase):
 		winners = test_market.GetWinners(predictions)
 		wanted_results = {producers[0]:[Bid(1.3,producers[0],200,1),Bid(1.3,producers[0],200,1),Bid(1.3,producers[0],200,1)],
 						  producers[1]:[Bid(1.6,producers[1],300,1),Bid(1.6,producers[1],100,1),Bid(1.6,producers[1],300,1)],
-						  producers[2]:["Nothing","Nothing",Bid(2.4,producers[2],300,2)],
-						  producers[3]:["Nothing","Nothing",Bid(1.4,producers[3],200,3)],
+						  producers[2]:[Bid(0,0,0,0),Bid(0,0,0,0),Bid(2.4,producers[2],300,2)],
+						  producers[3]:[Bid(0,0,0,0),Bid(0,0,0,0),Bid(1.4,producers[3],200,3)],
 						  }
-		#print(winners,"blip",wanted_results)
 		for i in producers:
-			#if i in winners:
-			#print("winner:",get_amounts_bid(winners[i]))
-			#if i  in wanted_results:
-			#print("got",get_amounts_bid(winners[i]))
-			#print("want",get_amounts_bid(wanted_results[i]))
 			self.assertEqual(get_amounts_bid(winners[i]),get_amounts_bid(wanted_results[i]),"oops")
 
 
@@ -89,6 +82,4 @@ def get_amounts_bid(bid_list):
 			formated_list.append(i.amountBid)
 	return formated_list
 if __name__ == "__main__":
-	#test = TestPQ()
-	#test.test_add()
 	unittest.main()

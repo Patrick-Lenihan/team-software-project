@@ -1,0 +1,134 @@
+import tkinter as tk
+import tkinter.ttk as ttk
+from gridClasses import powerstation, smartmeter, substation
+import eirgridData
+import controller.main as main
+
+class GUI():
+    ''' '''
+
+    #CONSTRUCTOR
+    def __init__(self, root):
+        #ROOT
+        self.root = root
+        self.root.title('Controller GUI')
+        self.root.geometry('1000x650')
+        self.root.configure(background = 'white')
+
+        #FRAMES
+        frame = tk.Frame(root)
+
+        self.mainAreaFrame = tk.Frame(self.root)
+        
+        self.rightFrame = tk.Frame(self.root)
+        self.rightFrame = tk.Frame(self.root, bg = '#7C90A0')
+        self.rightFrame.place(x = 735, y = 0, width = 250, height = 620)
+        welcome = tk.Text(self.rightFrame, height = 2, width = 20, font = 'calibri', bg = '#7C90A0', highlightthickness=0, highlightbackground = '#7C90A0', highlightcolor = '#7C90A0', relief = 'flat')
+        welcome.insert(tk.END, 'Select a grid element for more information')
+         
+        self.mainAreaFrame = tk.Frame(self.root, bg = '#181D27')
+        self.mainAreaFrame.place(x = 10, y = 0, width = 700, height = 620)
+
+        #RIGHT FRAME ACTIONS - DISPLAY BUTTONS IN RIGHT FRAME
+        def substationDisplay(self = self):
+            for widget in self.rightFrame.winfo_children():
+                if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
+                    widget.grid_remove()
+            
+            substationText = tk.Label(self.rightFrame, text = 'Substation', font = 'calibri')
+            substationText.grid(row = 0, column = 0, pady = 10)
+            allHomesUsage = tk.Button(self.rightFrame, text = 'Total energy usage by connected homes', font = 'calibri', width = 28, bg ='#52FFB8', relief = 'flat', command = lambda: open_popup('Energy Usage Recorded by All Connected Homes', data = allHomesUsage()))
+            allHomesUsage.grid(row = 1, column = 0, pady = 20, padx = 10)
+
+            def allHomesUsage():
+                data = main.Main.getUsage(main.Main.getSubstation(main.Main.substation))
+                return data
+
+        def smartMeterDisplay(self = self):
+            for widget in self.rightFrame.winfo_children():
+               if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
+                    widget.grid_remove()
+
+            smartMeterText = tk.Label(self.rightFrame, text = 'Smart Meter', font = 'calibri')
+            smartMeterText.grid(row = 0, column = 0, pady = 10)
+            smartMeterUsage = tk.Button(self.rightFrame, text = 'Total energy usage by \n an individual connected houses \n with a smart meter', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Individual Household Energy Usage Recorded by Smart Meters'))
+            smartMeterUsage.grid(row = 1, column = 0, pady = 20, padx = 10)
+
+        def BESSDisplay(self = self):
+            for widget in self.rightFrame.winfo_children():
+                if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
+                    widget.grid_remove()
+            
+            BESSText = tk.Label(self.rightFrame, text = 'BESS - Battery \n Energy Storage System', font = 'calibri')
+            BESSText.grid(row = 0, column = 0, pady = 10)
+            dischargeBattery = tk.Button(self.rightFrame, text = 'Discharge battery', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Discharge Battery'))
+            dischargeBattery.grid(row = 1, column = 0, pady = 20, padx = 10)
+
+        def damDisplay(self = self):
+            for widget in self.rightFrame.winfo_children():
+                if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
+                    widget.grid_remove()
+
+            damText = tk.Label(self.rightFrame, text = 'Dam', font = 'calibri')
+            damText.grid(row = 0, column = 0, pady = 10)
+            checkWaterLevels = tk.Button(self.rightFrame, text = 'Check water levels', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Hydroelectric Dam Water Levels'))
+            checkWaterLevels.grid(row = 1, column = 0, pady = 20, padx = 10)
+
+        def controllerDisplay(self = self):
+            for widget in self.rightFrame.winfo_children():
+                if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
+                    widget.grid_remove()
+
+            controllerText = tk.Label(self.rightFrame, text = 'Controller', font = 'calibri')
+            controllerText.grid(row = 0, column = 0, pady = 10)
+            viewHistoricalByTime = tk.Button(self.rightFrame, text = 'Total usage data \n data by time', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Historical Data by Time'))
+            viewHistoricalByTime.grid(row = 1, column = 0, pady = 20, padx = 10)
+            viewHistoricalByDay = tk.Button(self.rightFrame, text = 'Total usage data \n by day', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Historical Data by Day'))
+            viewHistoricalByDay.grid(row = 2, column = 0, pady = 20, padx = 10)
+
+        def windFarmDisplay(self = self):
+            for widget in self.rightFrame.winfo_children():
+                if isinstance(widget, tk.Button) or isinstance(widget, tk.Label):
+                    widget.grid_remove()
+
+            windFarmText = tk.Label(self.rightFrame, text = 'Wind Farm', font = 'calibri')
+            windFarmText.grid(row = 0, column = 0, pady = 10)
+            checkBatteryLevel = tk.Button(self.rightFrame, text = 'Check wind farm \n battery levels', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Wind Farm Battery Level'))         
+            checkBatteryLevel.grid(row = 1, column = 0, pady = 20, padx = 10)
+
+        def open_popup(define_title, data): #where define_title is the window title and data is the content to be displayed
+            '''
+            Reusable function for opening a popup window when user
+            clicks on a button in the rightFrame. 
+        
+            Args:
+            define_title: Set a title for the popup window
+            '''
+            top = tk.Toplevel(root)
+            top.geometry('750x500')
+            top.title(define_title)
+            top.configure(background = '#181D27')
+
+            data.grid(top)
+
+
+        #MAIN AREA BUTTONS
+        windFarm = tk.Button(self.mainAreaFrame, text = 'Wind Farm', font = 'calibri', width = 15, bg ='#52FFB8', relief = 'flat', command = lambda: windFarmDisplay(self = self))
+        windFarm.grid(row = 1, column = 0, pady = 100, padx = 20)
+        smartMeter = tk.Button(self.mainAreaFrame, text = 'Smart meter', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat', command = lambda: smartMeterDisplay(self = self))
+        smartMeter.grid(row = 1, column = 1, pady = 100, padx = 10)
+        bess = tk.Button(self.mainAreaFrame, text = 'BESS', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat', command = lambda: BESSDisplay(self = self))
+        bess.grid(row = 1, column = 2, pady = 100, padx = 10)
+        
+        controller = tk.Button(self.mainAreaFrame, text = 'Controller', font = 'calibri', width = 15, bg ='white', relief = 'flat', command = lambda: controllerDisplay(self = self))
+        controller.grid(row = 13, column = 1, pady = 20)
+        
+        substationButton = tk.Button(self.mainAreaFrame, text = 'Substation', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat', command = lambda: substationDisplay(self = self))
+        substationButton.grid(row = 14, column = 0, pady = 100, padx = 20)
+        dam = tk.Button(self.mainAreaFrame, text = 'Dam', font = 'calibri', width = 10, bg ='#52FFB8', relief = 'flat', command = lambda: damDisplay())
+        dam.grid(row = 14, column = 1, pady = 100, padx = 20)
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    p = GUI(root)
+    root.mainloop()

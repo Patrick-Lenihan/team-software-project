@@ -58,10 +58,9 @@ class Producer(object):
         '''
         self.output = orders[0].amount_electrictiy
         if self.max_output < self.output:
-            self.output = max_output
+            self.output = self.max_output
     def __hash__(self):
         return hash((self.output,self.price,self.max_output,self.emmision_level))
-
     
     current_production = property(getOutput,setOutput)
 
@@ -76,17 +75,17 @@ class FossilFuelPlant(Producer):
                         good of the producer.
         max_output: the maximum amount of energy the
                     producer can produce at once.
-        rampUpLimit: the maximum amount that the plant can ramp up
+        ramp_up_limit: the maximum amount that the plant can ramp up
                     every 15 mins.
     '''
-    def __init__(self,price,emmision_level,max_output,rampUpLimit):
+    def __init__(self,price,emmision_level,max_output,ramp_up_limit):
         super().__init__(price,emmision_level,max_output)
-        self.rampUpLimit = rampUpLimit
+        self.ramp_up_limit = ramp_up_limit
         
     def startRampUp(self, increase):
         # assume a fossil fuel plant can ramp 100MW every 15 mins till max output
-        if increase > self.rampUpLimit:
-            increase = self.rampUpLimit
+        if increase > self.ramp_up_limit:
+            increase = self.ramp_up_limit
         if increase + self.output > self.max_output:
             self.output = self.max_output
         else:
@@ -121,8 +120,8 @@ class FossilFuelPlant(Producer):
         bids = []
         current_possable_output = self.output
         for i in predictions:
-            if (current_possable_output + self.rampUpLimit)<= self.max_output:
-                current_possable_output += self.rampUpLimit
+            if (current_possable_output + self.ramp_up_limit)<= self.max_output:
+                current_possable_output += self.ramp_up_limit
             else:
                 current_possable_output = self.max_output
             bid = Bid(self.price,self,current_possable_output,self.emmision_level)
@@ -171,7 +170,7 @@ class FossilFuelPlant(Producer):
         while i < len(orders):
             jump = orders[i]- orders[i-1]
             jumps.append(jump)
-            if self.rampUpLimit < jump:
+            if self.ramp_up_limit < jump:
                 illigal_jumps.put({"Position":i,"jump: ":jump}) 
             i+=1
         return jumps, illigal_jumps
@@ -192,13 +191,13 @@ class FossilFuelPlant(Producer):
         while True:
             if i < 0:
                 return jumps
-            if jumps[i] <= self.rampUpLimit:
-                if jumps[index_to_change] - self.rampUpLimit < self.rampUpLimit- jumps[i]:
-                    jumps[i] += jumps[index_to_change]-self.rampUpLimit
-                    jumps[index_to_change] = self.rampUpLimit
+            if jumps[i] <= self.ramp_up_limit:
+                if jumps[index_to_change] - self.ramp_up_limit < self.ramp_up_limit- jumps[i]:
+                    jumps[i] += jumps[index_to_change]-self.ramp_up_limit
+                    jumps[index_to_change] = self.ramp_up_limit
                     return jumps
                 else:
-                    amount_to_change = self.rampUpLimit -  jumps[i]
+                    amount_to_change = self.ramp_up_limit -  jumps[i]
                     jumps[i] += amount_to_change
                     jumps[index_to_change] -= amount_to_change
             i -= 1
@@ -247,26 +246,10 @@ class WindFarm(Producer):
             bids.append(Bid(self.price,self,amount_to_bid,self.emmision_level))
         return bids
     def receiveOrder(self,orders):
-        self.battery.discharge(orders[i])
+        self.battery.discharge(orders[0].amount_electrictiy)
+        self.output = orders[0].amount_electrictiy
+        self.calculateNextOutput()
             
-
-class HydroDam(Producer):
-    def __init__(self):
-        super().__init__()
-        self.water_level = 95 # percentage of dam filled, assume 90% is max safe height, at least 40% needed
-        self.output = 0
-    
-    def manageWaterLevel(self, request):
-        self.checkWaterLevel()
-        if self.water_level >= 90 and request:
-            self.releaseWater()
-    
-    def checkWaterLevel(self):
-        self.water_level += randint(0,2) # random for the possibility of rain
-        
-    def releaseWater(self):
-        self.water_level -= 2 # this can be changed to
-
 
 class Battery(object):
     '''an object used to represent a battery storage facility
