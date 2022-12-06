@@ -83,6 +83,22 @@ class Main():
         for i in self.producers:
             total_energy += i.current_production
         return total_energy
+    
+    def pollIndividualProducers(self):
+        """
+       gets a list of all producers current output.
+
+        an internal method that loops through the producers and asks them how much they are
+        generating and
+
+        Returns:
+            list of energy produced by each producer
+
+        """
+        level = []
+        for i in self.producers:
+            level.append( i.current_production )
+        return level
 
     def getPredictions(self, usage):
         return self.prediction.predict(usage)

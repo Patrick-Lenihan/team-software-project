@@ -10,9 +10,10 @@ class GUI():
     ''' '''
 
     #CONSTRUCTOR
-    def __init__(self, root):
+    def __init__(self, root, main):
         #ROOT
         self.root = root
+        self.main = main
         self.root.title('Controller GUI')
         self.root.geometry('1000x650')
         self.root.configure(background = 'white')
@@ -96,7 +97,7 @@ class GUI():
             
             BESSText = tk.Label(self.rightFrame, text = 'BESS - Battery \n Energy Storage System', font = 'calibri')
             BESSText.grid(row = 0, column = 0, pady = 10)
-            dischargeBattery = tk.Button(self.rightFrame, text = 'Discharge battery', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: open_popup('Discharge Battery'))
+            dischargeBattery = tk.Button(self.rightFrame, text = 'Discharge battery', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: discharge_batteries(input("How much extra battery power is needed")))
             dischargeBattery.grid(row = 1, column = 0, pady = 20, padx = 10)
            
         def productionDisplay(self = self):
@@ -109,19 +110,19 @@ class GUI():
             checkProduction = tk.Button(self.rightFrame, text = 'Check production levels \n by all producers', font = 'calibri', width = 28, bg = '#52FFB8', relief = 'flat', command = lambda: checkProductionLevels())         
             checkProduction.grid(row = 1, column = 0, pady = 20, padx = 10)
 
-            def checkProductionLevels():
-                level = main.Main.pollProducers(main)
+        def checkProductionLevels():
+            level = self.main.pollIndividualProducers()
 
-                top = tk.Toplevel(root)
-                top.geometry('750x500')
-                top.configure(background = '#181D27')
-                data = tk.Text(top, width = 100, font = 'Calibri', fg = 'white', bg = '#181D27', relief = 'flat')
-                data.insert(tk.END, 'Current production levels \n')
-                for item in level:
-                    data.insert(tk.END, str(item) + '\n')
-                data.pack()
+            top = tk.Toplevel(root)
+            top.geometry('750x500')
+            top.configure(background = '#181D27')
+            data = tk.Text(top, width = 100, font = 'Calibri', fg = 'white', bg = '#181D27', relief = 'flat')
+            data.insert(tk.END, 'Current production levels \n')
+            for item in level:
+                data.insert(tk.END, str(item) + '\n')
+            data.pack()
 
-        def open_popup(define_title, data): #where define_title is the window title and data is the content to be displayed
+        def discharge_batteries(amount): #where define_title is the window title and data is the content to be displayed
             '''
             Reusable function for opening a popup window when user
             clicks on a button in the rightFrame. 
@@ -131,8 +132,13 @@ class GUI():
             '''
             top = tk.Toplevel(root)
             top.geometry('750x500')
-            top.title(define_title)
+            top.title('Battery')
             top.configure(background = '#181D27')
+            
+            data = tk.Text(top, width = 100, font = 'Calibri', fg = 'white', bg = '#181D27', relief = 'flat')
+            data.insert(tk.END, 'Battery Discharge successful \n')
+            data.insert(tk.END, str(amount) + ' - used\n')
+            data.pack()
 
             data.grid(top)
 

@@ -26,8 +26,8 @@ class Simulation(object):
         producers = self.generateProducers()
         self.setUsages("eirgridData/usage.csv")
         self.setHistory()
-        controller = main.Main(self.main_substation, producers)
-        controller.Iterate()
+        self.controller = main.Main(self.main_substation, producers)
+        self.controller.Iterate()
 
     def setUsages(self, usage_csv):
         """setUsages reads in the passes file path to 
@@ -133,5 +133,5 @@ class Simulation(object):
 if __name__ == "__main__":
     sim = Simulation()
     root = tk.Tk()
-    p = gui.GUI(root)
+    p = gui.GUI(root, sim.controller)
     root.mainloop()
