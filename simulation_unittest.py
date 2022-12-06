@@ -4,12 +4,6 @@ import gridClasses.smartmeter as smartmeter
 import gridClasses.substation as substation
 import gridClasses.powerstation as powerstation
 
-'''
-class NormalTest(simulation.Simulation):
-    def __init__(self):
-        super().__init__()
-'''
-
 class TestNormal(unittest.TestCase):
     def test_NoFails(self):
         sim = simulation.Simulation()
