@@ -27,7 +27,7 @@ class Simulation(object):
         producers = self.generateProducers()
         self.setUsages("eirgridData/usage")
         self.setHistory()
-        self.controller = main.Main(self._substations[0], producers,self._substations, self._smartmeters)
+        self.controller = main.Main(self._substations[0], producers,self._substations, self._num_meters)
         winners = self.controller.market.GetWinners([5000,0,0,0,0]) # starting production
         self.controller.sendOrders(winners)
         self.results = self.controller.Iterate()
@@ -77,7 +77,7 @@ class Simulation(object):
         # we are deviding by the total usage by the number of
         # smart meteres here because want to get a realistic number.
         # for each smart meter.
-        usage_per_meter = int(row[1])//len(self._smartmeters)
+        usage_per_meter = int(row[1])//len(self._num_meters)
         cursor.execute("INSERT INTO usage VALUES (?, ?)",
                        (time, usage_per_meter))
 
