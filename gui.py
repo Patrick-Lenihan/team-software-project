@@ -87,7 +87,7 @@ class GUI():
                 levels = []
                 for substation in main.Main.substations:
                     substation.getCurrentlyStored()
-
+                    
                 top = tk.Toplevel(root)
                 top.geometry('750x500')
                 top.configure(background = '#181D27')
