@@ -135,9 +135,11 @@ class GUI():
             top.title('Battery')
             top.configure(background = '#181D27')
             
+            production, usage, battery_discharge, battery_level = self.manageBatteries(0, amount)
+            
             data = tk.Text(top, width = 100, font = 'Calibri', fg = 'white', bg = '#181D27', relief = 'flat')
             data.insert(tk.END, 'Battery Discharge successful \n')
-            data.insert(tk.END, str(amount) + ' - used\n')
+            data.insert(tk.END, str(battery_discharge) + ' - used\n')
             data.pack()
 
             data.grid(top)
